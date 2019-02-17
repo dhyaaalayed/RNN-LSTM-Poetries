@@ -5,20 +5,23 @@ from keras.layers import LSTM
 import numpy as np
 #from RNN_LSTM_training import *
 from skip_gram import *
+from RNN_LSTM_model import *
 np.set_printoptions(threshold=np.nan)
 
 
-vocab_size = 18638
-dim_embedddings = 512
-sequence_length = 3
-model = Sequential()
-model.add( LSTM(dim_embedddings, batch_input_shape = (None, sequence_length, dim_embedddings), return_sequences = False) )
-model.add(Dropout(0.2)) # should be added later
-model.add(Dense(vocab_size, activation='softmax')) # not sure about vocab_size - 1
-model.compile(loss = 'categorical_crossentropy', optimizer = 'RMSprop', metrics = ['accuracy'])
-model.summary()
+# vocab_size = 18638
+# print('from generator jr vocab_size: ', jr.vocab_size)
+# dim_embedddings = 512
+# sequence_length = 3
+# model = Sequential()
+# model.add( LSTM(dim_embedddings, batch_input_shape = (None, sequence_length, dim_embedddings), return_sequences = False) )
+# model.add(Dropout(0.2)) # should be added later
+# model.add(Dense(vocab_size, activation='softmax')) # not sure about vocab_size - 1
+# model.compile(loss = 'categorical_crossentropy', optimizer = 'RMSprop', metrics = ['accuracy'])
+# model.summary()
 
 
+model = build_rnn_lstm(jr.vocab_size, dim_embedddings = 512, sequence_length = 3)
 
 
 # load weights:
