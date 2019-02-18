@@ -13,23 +13,7 @@ from skip_gram import *
 
 np.set_printoptions(threshold=np.nan)
 
-# def poem2wordlist(poem):
-# 	clean = re.sub("[^a-zA-Z']"," ", poem) # solving the ' by adding ' to this regular expression in order to not removing it using re!
-# 	words = clean.split()
-# 	return words
-
-
-# def get_poetries(data):
-# 	poetries = []
-# 	for poem in data: ## to have all poems
-# 		poem_wordlist = poem2wordlist(poem['poem'])
-# 		poetries.append(np.array(poem_wordlist))
-# 	return poetries
-
 json_reader = Json_reader()
-
-# with open('multim_poem.json') as poem_file:
-#     data = json.load(poem_file)
 
 poetries = json_reader.get_poetries()
 
@@ -59,12 +43,6 @@ for poem in poetries:
 		sequences.append(current_sequence)
 		targets.append(current_target)
 
-# print('sequences: ', sequences)
-# print('targets: ', targets)
-
-
-### apply the dictionary on the data:
-
 numeric_sequences = []
 numeric_targets = []
 for poem in poetries:
@@ -76,8 +54,6 @@ for poem in poetries:
 		numeric_sequences.append(current_sequence)
 		numeric_targets.append(current_target)
 
-# print('numeric_sequences: ', numeric_sequences)
-# print('numeric_targets: ', numeric_targets)
 
 
 def int2dense(vocab_size, word_index):
@@ -109,86 +85,15 @@ for poem in poetries:
 
 embedding_sequences = np.array(embedding_sequences, dtype = float)
 
-# print('embedding_sequences: ', embedding_sequences[:10])
-print('embedding_sequences shape: ', embedding_sequences[:10].shape)
-# print('embedding_targets: ', embedding_targets)
-
-# the last problem: not all words are able to be converted to numbers using word2id
-	# solution:
-		# create manuall word2id just for this unim poem using simple python code!!!!!!!!
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-###########________________
-
-
-
-
-
-
-# Data = numeric_sequences
 Data = embedding_sequences
-# we normalize the data by dividing it on the range
-# target = np.array(numeric_targets).flatten()
 
-
-
-# target = np.array(embedding_targets).flatten() 
-# target = np.array(embedding_targets) # this was used
 target = dense_targets
 
-# print('data: ', Data)
-# print('target: ', target)
-
-# How to slice
-# data = np.array(Data[:500], dtype = float)
 data = np.array(Data, dtype = float)
-# target = np.array(target[:500], dtype = float)
-
-
-# data = data.reshape(data.shape[0] * data.shape[1], data.shape[2])
-
-# data = np.array(Data, dtype = float)
-# target = np.array(target, dtype = float)
 
 print('data shape: ', data.shape)
 print('target shape: ', len(target))
 
-
-
-# just few amount of data!!!!!
-
-# x_train, x_test, y_train, y_test = train_test_split(data, target, test_size = 0.2, random_state = 4)
 x_train = data
 y_train = target
 
@@ -196,21 +101,7 @@ main = False
 
 if main:
 
-	# model = Sequential()
-	# model.add(LSTM((1), batch_input_shape = (None, 3, 1), return_sequences = False))
-	# model.compile(loss = 'mean_absolute_error', optimizer = 'adam', metrics = ['accuracy'])
-	# model.compile( # this is Google TPU Shakspear compilation!
- #      optimizer=tf.train.RMSPropOptimizer(learning_rate=0.01),
- #      loss='sparse_categorical_crossentropy',
- #      metrics=['sparse_categorical_accuracy'])
-
-	model = Sequential()
-	#model.add( Embedding(vocab_size, dim_embedddings, weights=[embedding_matrix], trainable=False, input_length=sequence_length) ) # input_length is the sequence
-	model.add( LSTM(dim_embedddings, batch_input_shape = (None, sequence_length, dim_embedddings), return_sequences = False) )
-	model.add(Dropout(0.2)) # should be added later
-	model.add(Dense(vocab_size, activation='softmax')) # not sure about vocab_size - 1
-	model.compile(loss = 'categorical_crossentropy', optimizer = 'RMSprop', metrics = ['accuracy'])
-	
+	model = build_rnn_lstm(jr.vocab_size, dim_embedddings = 512, sequence_length = 3)	
 
 	model.summary()
 	history_loss = []
@@ -227,39 +118,9 @@ if main:
 		plt.plot(history_loss)
 		plt.savefig('lstm_loss.png')
 	results = model.predict(x_test)
-	
-	
-	# plt.scatter(range(results.shape[0]), results, c = 'red')
-	# plt.scatter(range(y_test.shape[0]), y_test, c = 'green')
-	
-	# plt.show()
 		
 
 	print('the results after training: ', results)
 	print('the true data', y_test)
 	
 	
-	
-	
-	### id2words
-	
-	
-	# results = np.round(results * unique_word_list.shape[0])
-	
-	# x_test = np.round(results * unique_word_list.shape[0])
-	
-	
-	# for i in range(results.shape[0]):
-	# 	print(unnormalized_word2id[x_test[i][0]], ' ') ## complete converting the poem
-
-
-
-
-
-
-
-
-
-
-
-
