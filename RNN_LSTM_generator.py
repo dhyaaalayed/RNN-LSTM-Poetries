@@ -9,18 +9,6 @@ from RNN_LSTM_model import *
 np.set_printoptions(threshold=np.nan)
 
 
-# vocab_size = 18638
-# print('from generator jr vocab_size: ', jr.vocab_size)
-# dim_embedddings = 512
-# sequence_length = 3
-# model = Sequential()
-# model.add( LSTM(dim_embedddings, batch_input_shape = (None, sequence_length, dim_embedddings), return_sequences = False) )
-# model.add(Dropout(0.2)) # should be added later
-# model.add(Dense(vocab_size, activation='softmax')) # not sure about vocab_size - 1
-# model.compile(loss = 'categorical_crossentropy', optimizer = 'RMSprop', metrics = ['accuracy'])
-# model.summary()
-
-
 model = build_rnn_lstm(jr.vocab_size, dim_embedddings = 512, sequence_length = 3)
 
 
@@ -79,18 +67,6 @@ def word_sequence2embedding_sequence(word_sequence):
 	embedding_sequence.append( id2embedding(weights, word2id[word_sequence[1]]))
 	embedding_sequence.append( id2embedding(weights, word2id[word_sequence[2]]))
 	return np.array(embedding_sequence)
-
-
-# for i in range(x_test.shape[0]):
-
-# 	print('generated_poem: ', generate_poem(x_test[i], 40))
-# print('generated_poem: ', generate_poem_from_embedding(x_test[0], 40))
-
-word_sequence = np.array([ 'i', 'love', 'you' ])
-
-embedding_sequence = word_sequence2embedding_sequence(word_sequence)
-
-print(generate_poem_from_embedding(embedding_sequence, 40))
 
 
 

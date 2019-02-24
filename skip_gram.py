@@ -57,7 +57,7 @@ def train_the_model(tokenizer, SkipGram, poetries, vocab_size):
 	return weights
 
 
-main = True
+main = False
 if main == True:
 	tokenizer = text.Tokenizer()
 	jr = Json_reader()

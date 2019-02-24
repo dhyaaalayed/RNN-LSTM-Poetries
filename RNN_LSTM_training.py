@@ -19,7 +19,8 @@ poetries = json_reader.get_poetries()
 
 tokenizer = text.Tokenizer()
 word2id, id2word, poetries_from_keras, poetries_words_from_keras = json_reader.get_dictionaries_from_tokenizer(tokenizer)
-vocab_size = len(word2id) + 1 
+vocab_size = len(word2id) + 1
+print('word2id: ', word2id)
 print('vocab_size: ', vocab_size)
 dim_embedddings = 512
 SkipGram = build_skip_gram(vocab_size, dim_embedddings)
