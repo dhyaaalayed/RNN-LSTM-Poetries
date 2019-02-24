@@ -1,5 +1,5 @@
 # Overview
-We implemented Recurrent Neural Network with Long Short Term Memory to generate poetries and we trained it on (Microsoft dataset).
+We implemented Recurrent Neural Network with Long Short Term Memory (RNN-LSTM) to generate poetries and we trained it on multim_poem.json file from [img2poem](https://github.com/bei21/img2poem) repository.
 
 # Content:
 - Used methods
@@ -9,7 +9,7 @@ We implemented Recurrent Neural Network with Long Short Term Memory to generate 
 - Some generated poetries
 
 # Used methods
-We used methods from two Arificial Intelligence branches: SkipGram model from Natural Language Processing to vectorize the training data and RNN with LSTM from Machine Learning as generative model.
+We used methods from two Artificial Intelligence branches: SkipGram model from Natural Language Processing to vectorize the training data and RNN with LSTM from Machine Learning in particular Deep Learning as generative model.
 <p><img width="414" alt="image" src="https://user-images.githubusercontent.com/26183913/53301787-5fad1680-3857-11e9-863a-225348dfffd2.png"></p>
 
 # Prepaire the training data
@@ -17,18 +17,17 @@ Poetries are type of text and they are sequential data. Unilike images, because 
 <p><img width="974" alt="image" src="https://user-images.githubusercontent.com/26183913/53301820-b0bd0a80-3857-11e9-81d0-e626fc45f1e2.png"></p>
 
 # Vectorize the training data
-Words are not the input of RNN-LSTM. We need first to convert them to embedding vectors of the same size if the input layer of the RNN-LSTM. We chose 512 dimension for each embedding vector. However, it's not enouph just to assign each word to a unique random vector, we should use SkipGram model to convert the words to embedding vectors
-[link to skipgram paper]
-Firstly this model need to be trained on the poetries training data. After finishing the training process, we use the pretrained SkipGram model to vectorize the words sequences before feeding them to the RNN-LSTM.
-
-The following picture represents embedding vectors of some of the words in our training data, but they have been projected from 512 dimension to 2 dimension using TSNE() tool in order to visualize them in 2d space.
+Words are not the input of RNN-LSTM. We need first to convert them to embedding vectors of the same size if the input layer of the RNN-LSTM. We chose 512 dimension for each embedding vector. However, it's not enouph just to assign each word to a unique random vector, we should use [SkipGram model](https://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf) to convert the words to embedding vectors
+Firstly this model need to be trained on the poetries training data. After finishing the training process, we use the pretrained SkipGram model to vectorize the words' sequences before feeding them to the RNN-LSTM model.
+The following picture represents embedding vectors of some of the words in our training data, but they have been projected from 512 dimension to 2 dimension using [t-SNE technique](https://lvdmaaten.github.io/tsne/) in order to visualize them in 2d space.
 ![image](https://user-images.githubusercontent.com/26183913/53301864-20cb9080-3858-11e9-9af7-20f073632779.png)
 
 # RNN-LSTM generative model
-Our implemented RNN-LSTM consistes of 3 layers: an input layer of size of 3 embedding vectors(3 vectorized words) as we defined the sequence length parameter of size 3, a hidden layer of 512 LSTM cells and a dense output layer of the vocab_size (vocab_size is the count of all unique words in the poetries).
+Our implemented RNN-LSTM consistes of 3 layers: an input layer of size 3 embedding vectors(3 vectorized words) as we defined the sequence length parameter of size 3, a hidden layer of 512 LSTM cells and a dense output layer of the vocab_size (vocab_size is the count of all unique words of the poetries training data).
 ## RNN-LSTM training process
 Firstly we load a batch from the training data: X-Data and Y-Data, then we vectorize X-Data words using the pretrained SkipGram model as 512 embedding vectors and we vectorize each word in Y-Data as dense vector of vocab_size, because the RNN-LSTM model will be trained to predict the next word of the sequence as a dense vector. The following picture represents the full AI model that consists of SkipGram model and RNN-LSTM model:
 <p><img width="846" alt="image" src="https://user-images.githubusercontent.com/26183913/53301909-98012480-3858-11e9-825e-1d7a7c457cec.png"></p>
+
 ## Use the pretrained RNN-LSTM model to generate poetries
 In order to use the RNN-LSTM pretrained model to generate a poem, we need a seed of 3 words, then we vectorize those three words using the pretrained SkipGram model to feed them to the RNN-LSTM. RNN-LSTM will predict the next word, then we create a new sequence of 3 words by using the second and the third words of the last sequence and by adding the new predicted word to the sequence and so on.
 
