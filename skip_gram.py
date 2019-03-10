@@ -57,7 +57,7 @@ def train_the_model(tokenizer, SkipGram, poetries, vocab_size):
 	return weights
 
 
-main = False
+main = True # Should should be true in order for the generator to access the json file
 if main == True:
 	tokenizer = text.Tokenizer()
 	jr = Json_reader()
